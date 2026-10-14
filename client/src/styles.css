@@ -1,0 +1,250 @@
+/* ==========================================================================
+   Amazon Design System Tokens & Global Base
+   ========================================================================== */
+
+:root {
+  /* Brand Palettes */
+  --amz-nav: #131921;
+  --amz-subnav: #232f3e;
+  --amz-nav-border: #3a4553;
+  --amz-bg: #eaeded;
+  --amz-white: #ffffff;
+  --amz-card: #ffffff;
+
+  /* Typography Colors */
+  --amz-text-dark: #0f1111;
+  --amz-text-muted: #565959;
+  --amz-text-secondary: #64748b;
+  --amz-link: #007185;
+  --amz-link-hover: #c7511f;
+
+  /* Accent & Action Colors */
+  --amz-yellow: #ffd814;
+  --amz-yellow-hover: #f7ca00;
+  --amz-yellow-active: #f0b800;
+  --amz-yellow-border: #fcd200;
+
+  --amz-orange: #ffa41c;
+  --amz-orange-hover: #fa8900;
+  --amz-orange-active: #e57800;
+  --amz-orange-border: #ff8f00;
+
+  --amz-prime-blue: #00a8e1;
+  --amz-deal-red: #cc0c39;
+  --amz-price-red: #b12704;
+  --amz-green: #007600;
+  --amz-star: #de7921;
+
+  /* Borders & Dividers */
+  --amz-border: #d5d9d9;
+  --amz-border-subtle: #e7e7e7;
+  --amz-border-focus: #e77600;
+
+  /* Shadows */
+  --amz-shadow-sm: 0 1px 2px rgba(15, 17, 17, 0.08);
+  --amz-shadow-card: 0 2px 5px rgba(213, 217, 217, 0.5);
+  --amz-shadow-hover: 0 8px 18px rgba(15, 17, 17, 0.12);
+  --amz-shadow-flyout: 0 4px 20px rgba(0, 0, 0, 0.18);
+
+  /* Border Radii */
+  --amz-radius-sm: 4px;
+  --amz-radius-md: 8px;
+  --amz-radius-pill: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--amz-bg);
+  color: var(--amz-text-dark);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--amz-link);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--amz-link-hover);
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Utility Classes & Components
+   ========================================================================== */
+
+/* Shimmer Loading Skeleton */
+.skeleton-box {
+  background: linear-gradient(90deg, #f0f2f2 25%, #e6e8e8 37%, #f0f2f2 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: var(--amz-radius-sm);
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Typography Helpers */
+.amz-price {
+  color: var(--amz-text-dark);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.amz-price-symbol {
+  font-size: 0.75em;
+  font-weight: 500;
+  margin-right: 1px;
+}
+
+.amz-price-whole {
+  font-size: 1.35em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.amz-mrp {
+  font-size: 12px;
+  color: var(--amz-text-muted);
+}
+
+.amz-mrp s {
+  color: var(--amz-text-muted);
+}
+
+.amz-prime-tag {
+  color: var(--amz-prime-blue);
+  font-weight: 800;
+  font-style: italic;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.amz-prime-tag::before {
+  content: "✓";
+  font-style: normal;
+  color: #ff9900;
+  font-weight: 900;
+  font-size: 11px;
+}
+
+/* Buttons */
+.btn-amz-yellow {
+  background: var(--amz-yellow);
+  border: 1px solid var(--amz-yellow-border);
+  color: #0f1111;
+  padding: 8px 16px;
+  border-radius: var(--amz-radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.btn-amz-yellow:hover:not(:disabled) {
+  background: var(--amz-yellow-hover);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.btn-amz-yellow:active:not(:disabled) {
+  background: var(--amz-yellow-active);
+  transform: translateY(1px);
+}
+
+.btn-amz-yellow:disabled {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-amz-orange {
+  background: var(--amz-orange);
+  border: 1px solid var(--amz-orange-border);
+  color: #0f1111;
+  padding: 8px 16px;
+  border-radius: var(--amz-radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.btn-amz-orange:hover:not(:disabled) {
+  background: var(--amz-orange-hover);
+}
+
+.btn-amz-orange:active:not(:disabled) {
+  background: var(--amz-orange-active);
+  transform: translateY(1px);
+}
+
+.btn-amz-secondary {
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  color: var(--amz-text-dark);
+  padding: 8px 16px;
+  border-radius: var(--amz-radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 1px 2px rgba(15, 17, 17, 0.1);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-amz-secondary:hover:not(:disabled) {
+  background: #f7fafa;
+  border-color: #a6b2b2;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

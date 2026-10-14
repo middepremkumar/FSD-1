@@ -1,0 +1,104 @@
+<div class="product-card" [routerLink]="['/products', product.product_id]">
+  <!-- Top Badge -->
+  @if (product.badge) {
+    <div class="product-badge" [class.badge-choice]="product.badge === 'Amazon\'s Choice'" [class.badge-bestseller]="product.badge === 'Best Seller'">
+      {{ product.badge }}
+    </div>
+  }
+
+  <!-- Product Image Container -->
+  <div class="image-wrapper">
+    <img [src]="product.image" [alt]="product.title" (error)="onImageError($event)" loading="lazy" />
+  </div>
+
+  <!-- Content -->
+  <div class="card-content">
+    <span class="category-name">{{ product.category_name || 'Retail' }}</span>
+
+    <h3 class="product-title" [title]="product.title">
+      {{ product.title }}
+    </h3>
+
+    <!-- Amazon Amber Star Rating -->
+    <div class="rating-row">
+      <div class="star-rating" [title]="(product.rating_rate || 4.5) + ' out of 5 stars'">
+        <div class="stars-svg-wrap">
+          <!-- 5-star SVG set -->
+          <svg class="star-svg" viewBox="0 0 20 20" fill="#ffa41c">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+        </div>
+        <span class="rating-val">{{ product.rating_rate || 4.5 }}</span>
+      </div>
+      <span class="rating-count">({{ product.rating_count || 1200 | number }})</span>
+    </div>
+
+    <!-- Deal Tag / Limited Time Deal -->
+    @if (product.deal_tag) {
+      <div class="deal-tag">
+        <span class="deal-pill">{{ product.deal_tag }}</span>
+        @if (discountPercent > 0) {
+          <span class="discount-percent">{{ discountPercent }}% off</span>
+        }
+      </div>
+    }
+
+    <!-- Pricing (Amazon superscript rupee format) -->
+    <div class="price-row">
+      <div class="price-display">
+        <span class="currency">₹</span>
+        <span class="price-val">{{ product.price | number }}</span>
+      </div>
+      @if (product.original_price && product.original_price > product.price) {
+        <span class="mrp">M.R.P: <s>₹{{ product.original_price | number }}</s></span>
+      }
+    </div>
+
+    <!-- Prime & Delivery Row -->
+    <div class="delivery-row">
+      <span class="prime-badge">
+        <span class="prime-text">prime</span>
+        <svg class="prime-smile" viewBox="0 0 40 10" fill="none">
+          <path d="M2 3 Q 20 10 38 4" stroke="#ff9900" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="delivery-text">{{ product.delivery_info || 'FREE Delivery Tomorrow' }}</span>
+    </div>
+
+    <!-- Stock Warning Notice -->
+    @if (product.stock_quantity <= 10 && product.stock_quantity > 0) {
+      <div class="stock-warning">Only {{ product.stock_quantity }} left in stock</div>
+    } @else if (product.stock_quantity === 0) {
+      <div class="stock-out">Currently unavailable</div>
+    }
+
+    <!-- Add to Cart CTA -->
+    <div class="card-action">
+      <button
+        type="button"
+        class="add-cart-btn"
+        [class.btn-in-cart]="cartService.isInCart(product.product_id)"
+        [disabled]="product.stock_quantity === 0"
+        (click)="onAddToCart($event)"
+      >
+        @if (cartService.isInCart(product.product_id)) {
+          <svg class="btn-check-svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span>In Cart ({{ cartService.getItemQuantity(product.product_id) }})</span>
+        } @else {
+          <span>Add to Cart</span>
+        }
+      </button>
+
+      @if (addedToast(); as msg) {
+        <div class="inline-toast">
+          <svg class="toast-check" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span>{{ msg }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

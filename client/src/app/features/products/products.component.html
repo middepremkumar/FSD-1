@@ -1,0 +1,157 @@
+<div class="products-page">
+  <!-- Top Breadcrumbs -->
+  <nav class="catalog-breadcrumbs">
+    <a routerLink="/">Home</a>
+    <span class="crumb-separator">›</span>
+    <span class="crumb-link" (click)="clearFilters()">All Categories</span>
+    @if (activeCategory() !== 'All') {
+      <span class="crumb-separator">›</span>
+      <span class="active-crumb">{{ activeCategory() | titlecase }}</span>
+    }
+    @if (searchQuery()) {
+      <span class="crumb-separator">›</span>
+      <span class="active-crumb">"{{ searchQuery() }}"</span>
+    }
+  </nav>
+
+  <!-- Amazon 2-Column Catalog Layout -->
+  <div class="catalog-layout">
+    <!-- Left Sidebar: Filters & Departments -->
+    <aside class="catalog-sidebar">
+      <!-- Department Filter Section -->
+      <div class="filter-section">
+        <h3 class="filter-title">Department</h3>
+        <ul class="filter-list">
+          <li [class.active-filter]="activeCategory() === 'All'">
+            <button type="button" class="filter-btn" (click)="onCategorySelect('All')">
+              <span class="filter-check" [class.checked]="activeCategory() === 'All'"></span>
+              <span>All Departments</span>
+            </button>
+          </li>
+          @for (cat of categories(); track cat.category_id) {
+            <li [class.active-filter]="activeCategory().toLowerCase() === cat.slug.toLowerCase()">
+              <button type="button" class="filter-btn" (click)="onCategorySelect(cat.slug)">
+                <span class="filter-check" [class.checked]="activeCategory().toLowerCase() === cat.slug.toLowerCase()"></span>
+                <span>{{ cat.name }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Customer Reviews Filter -->
+      <div class="filter-section">
+        <h3 class="filter-title">Customer Reviews</h3>
+        <div class="rating-filter-group">
+          <div class="rating-filter-row" (click)="selectedSort.set('rating'); onSortChange()">
+            <div class="stars-gold">
+              <svg *ngFor="let s of [1,2,3,4]" class="star-mini" viewBox="0 0 20 20" fill="#ffa41c">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <svg class="star-mini" viewBox="0 0 20 20" fill="#d5d9d9">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+            </div>
+            <span class="rating-up-label">& Up</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amazon Prime Filter -->
+      <div class="filter-section">
+        <h3 class="filter-title">Delivery Day</h3>
+        <label class="filter-checkbox-label">
+          <input type="checkbox" checked />
+          <span class="prime-label-wrap">
+            <span class="prime-blue">prime</span>
+            <span class="prime-sub">Get It Tomorrow</span>
+          </span>
+        </label>
+      </div>
+
+      <!-- Price Sort Shortcuts -->
+      <div class="filter-section">
+        <h3 class="filter-title">Price Filter</h3>
+        <ul class="filter-list">
+          <li>
+            <button type="button" class="filter-btn" (click)="selectedSort.set('price_asc'); onSortChange()">
+              <span>Under ₹5,000 (Low to High)</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="filter-btn" (click)="selectedSort.set('price_desc'); onSortChange()">
+              <span>Premium Tech (High to Low)</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Clear action -->
+      <div class="filter-reset-wrap">
+        <button type="button" class="btn-sidebar-clear" (click)="clearFilters()">
+          Clear All Filters
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content: Results & Grid -->
+    <main class="catalog-main">
+      <!-- Results Bar -->
+      <div class="results-header-bar">
+        <div class="results-count-text">
+          @if (!isLoading()) {
+            <span>1-{{ products().length }} of <strong>{{ products().length }} results</strong></span>
+            @if (searchQuery()) {
+              <span> for <strong class="highlight-query">"{{ searchQuery() }}"</strong></span>
+            }
+            @if (activeCategory() !== 'All') {
+              <span> in <strong class="highlight-cat">{{ activeCategory() | titlecase }}</strong></span>
+            }
+          }
+        </div>
+
+        <div class="sort-widget">
+          <label for="sortSelect">Sort by:</label>
+          <div class="select-wrapper">
+            <select id="sortSelect" [(ngModel)]="selectedSort" (change)="onSortChange()">
+              <option value="default">Featured</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="rating">Avg. Customer Review</option>
+            </select>
+            <svg class="select-chevron" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Grid / Empty State -->
+      @if (isLoading()) {
+        <app-loading message="Filtering Amazon inventory..."></app-loading>
+      } @else {
+        @if (products().length > 0) {
+          <div class="products-grid">
+            @for (prod of products(); track prod.product_id) {
+              <app-product-card [product]="prod"></app-product-card>
+            }
+          </div>
+        } @else {
+          <div class="empty-results-card">
+            <div class="empty-icon-box">
+              <svg class="empty-search-svg" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.8">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </div>
+            <h3>No results found for your search</h3>
+            <p>Try checking your spelling or use more general terms to find products in our store.</p>
+            <button type="button" class="btn-clear-empty" (click)="clearFilters()">
+              Clear All Filters
+            </button>
+          </div>
+        }
+      }
+    </main>
+  </div>
+</div>

@@ -1,0 +1,258 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "Amazon FSD - Full Stack API",
+  "collectionId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+  "dateExported": "2026-10-06T04:50:00.000Z",
+  "version": "1.2",
+  "folders": [
+    {
+      "_id": "fld_system",
+      "name": "1. System & Health",
+      "containerId": "",
+      "created": "2026-10-06T04:50:00.000Z",
+      "sortNum": 10000
+    },
+    {
+      "_id": "fld_lab",
+      "name": "2. Lab Exercises (Unit 4 & 5)",
+      "containerId": "",
+      "created": "2026-10-06T04:50:00.000Z",
+      "sortNum": 20000
+    },
+    {
+      "_id": "fld_categories",
+      "name": "3. Categories",
+      "containerId": "",
+      "created": "2026-10-06T04:50:00.000Z",
+      "sortNum": 30000
+    },
+    {
+      "_id": "fld_products",
+      "name": "4. Products CRUD (4.d & 5.b)",
+      "containerId": "",
+      "created": "2026-10-06T04:50:00.000Z",
+      "sortNum": 40000
+    },
+    {
+      "_id": "fld_orders",
+      "name": "5. Orders & Checkout",
+      "containerId": "",
+      "created": "2026-10-06T04:50:00.000Z",
+      "sortNum": 50000
+    }
+  ],
+  "requests": [
+    {
+      "_id": "req_health",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_system",
+      "name": "GET /api/health (Database Connection Check)",
+      "url": "http://localhost:5000/api/health",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_stats",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_system",
+      "name": "GET /api/stats (Store Statistics)",
+      "url": "http://localhost:5000/api/stats",
+      "method": "GET",
+      "sortNum": 11000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_concepts",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_system",
+      "name": "GET /api/concepts (Curriculum Matrix)",
+      "url": "http://localhost:5000/api/concepts",
+      "method": "GET",
+      "sortNum": 12000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_hello",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_lab",
+      "name": "GET /api/hello (Unit 4.a Hello World)",
+      "url": "http://localhost:5000/api/hello",
+      "method": "GET",
+      "sortNum": 20000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_subqueries",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_lab",
+      "name": "GET /api/subqueries (Unit 5.c MySQL Subqueries)",
+      "url": "http://localhost:5000/api/subqueries",
+      "method": "GET",
+      "sortNum": 21000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_categories",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_categories",
+      "name": "GET /api/categories (List Categories)",
+      "url": "http://localhost:5000/api/categories",
+      "method": "GET",
+      "sortNum": 30000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_products_all",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_products",
+      "name": "GET /api/products (Read All Products)",
+      "url": "http://localhost:5000/api/products",
+      "method": "GET",
+      "sortNum": 40000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_products_filter_cat",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_products",
+      "name": "GET /api/products?category=Mobiles (Filter by Category)",
+      "url": "http://localhost:5000/api/products?category=Mobiles",
+      "method": "GET",
+      "sortNum": 41000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_products_search",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_products",
+      "name": "GET /api/products?search=Apple (Search Query)",
+      "url": "http://localhost:5000/api/products?search=Apple",
+      "method": "GET",
+      "sortNum": 42000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_products_one",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_products",
+      "name": "GET /api/products/1 (Read Single Product)",
+      "url": "http://localhost:5000/api/products/1",
+      "method": "GET",
+      "sortNum": 43000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_products_post",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_products",
+      "name": "POST /api/products (Create Product - 4.d CRUD)",
+      "url": "http://localhost:5000/api/products",
+      "method": "POST",
+      "sortNum": 44000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"title\": \"OnePlus 12 (16GB RAM, 512GB Storage)\",\n  \"category_id\": 1,\n  \"price\": 64999,\n  \"original_price\": 69999,\n  \"stock_quantity\": 25,\n  \"deal_tag\": \"Launch Offer\",\n  \"badge\": \"New Arrival\",\n  \"delivery_info\": \"FREE Delivery Tomorrow\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "req_products_put",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_products",
+      "name": "PUT /api/products/1 (Update Product - 4.d CRUD)",
+      "url": "http://localhost:5000/api/products/1",
+      "method": "PUT",
+      "sortNum": 45000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"title\": \"Apple iPhone 15 (128 GB) - Blue [Special Sale]\",\n  \"price\": 65999,\n  \"category_id\": 1,\n  \"stock_quantity\": 35,\n  \"badge\": \"Flash Deal\",\n  \"deal_tag\": \"Festival Special\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "req_products_delete",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_products",
+      "name": "DELETE /api/products/8 (Delete Product - 4.d CRUD)",
+      "url": "http://localhost:5000/api/products/8",
+      "method": "DELETE",
+      "sortNum": 46000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_orders_all",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_orders",
+      "name": "GET /api/orders (List All Orders)",
+      "url": "http://localhost:5000/api/orders",
+      "method": "GET",
+      "sortNum": 50000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req_orders_post",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_orders",
+      "name": "POST /api/orders (Checkout New Order)",
+      "url": "http://localhost:5000/api/orders",
+      "method": "POST",
+      "sortNum": 51000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"customer_name\": \"Prem Kumar\",\n  \"customer_email\": \"prem.kumar@example.com\",\n  \"shipping_address\": \"Plot 105, Tech City Road, Hyderabad 500081\",\n  \"payment_method\": \"UPI\",\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 1,\n      \"price\": 69999\n    },\n    {\n      \"product_id\": 2,\n      \"quantity\": 1,\n      \"price\": 29990\n    }\n  ]\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "req_orders_patch",
+      "colId": "9b128540-c0be-4521-8bc6-92c4314e3081",
+      "containerId": "fld_orders",
+      "name": "PATCH /api/orders/1/status (Update Order Status)",
+      "url": "http://localhost:5000/api/orders/1/status",
+      "method": "PATCH",
+      "sortNum": 52000,
+      "created": "2026-10-06T04:50:00.000Z",
+      "modified": "2026-10-06T04:50:00.000Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"status\": \"delivered\"\n}",
+        "form": []
+      }
+    }
+  ]
+}

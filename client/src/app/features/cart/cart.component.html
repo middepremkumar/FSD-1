@@ -1,0 +1,177 @@
+<div class="cart-container">
+  @if (cartService.count() === 0) {
+    <!-- Empty Cart Screen -->
+    <div class="empty-cart-card">
+      <div class="empty-icon-wrap">
+        <svg class="empty-trolley-svg" viewBox="0 0 24 24" fill="none" stroke="#565959" stroke-width="1.8">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+      </div>
+      <h2>Your Amazon Cart is empty</h2>
+      <p>Your shopping cart is waiting. Give it purpose — fill it with electronics, laptops, fashion, and books.</p>
+      <div class="empty-actions">
+        <a routerLink="/products" class="btn-shop-deals">Shop Today's Deals</a>
+        <a routerLink="/" class="btn-go-home">Go to Home Page</a>
+      </div>
+    </div>
+  } @else {
+    <!-- Active Cart Layout (2 Column) -->
+    <div class="cart-layout">
+      <!-- Left Column: Items List -->
+      <div class="items-column">
+        <div class="items-card">
+          <div class="cart-header">
+            <div>
+              <h1 class="cart-title">Shopping Cart</h1>
+              <span class="sub-link-clear" (click)="clearAll()">Deselect all items</span>
+            </div>
+            <div class="header-price-col">Price</div>
+          </div>
+
+          <!-- Free Delivery Progress Meter -->
+          <div class="free-delivery-meter-box">
+            @if (cartService.deliveryFee() === 0) {
+              <div class="meter-text success-text">
+                <svg class="check-meter-svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Your order qualifies for <strong>FREE Delivery</strong>.</span>
+              </div>
+            } @else {
+              <div class="meter-text">
+                Add <strong>₹{{ (499 - cartService.subtotal()) | number }}</strong> of eligible items to get <strong>FREE Delivery</strong>.
+              </div>
+            }
+            <div class="meter-track">
+              <div class="meter-bar" [style.width.%]="freeDeliveryPercent"></div>
+            </div>
+          </div>
+
+          <div class="items-list">
+            @for (item of cartService.items(); track item.product.product_id) {
+              <div class="cart-item-row">
+                <!-- Item Image -->
+                <div class="item-img-wrapper" [routerLink]="['/products', item.product.product_id]">
+                  <img [src]="item.product.image" [alt]="item.product.title" />
+                </div>
+
+                <!-- Item Details -->
+                <div class="item-details">
+                  <a [routerLink]="['/products', item.product.product_id]" class="item-title">
+                    {{ item.product.title }}
+                  </a>
+
+                  <div class="item-stock-status">
+                    @if (item.product.stock_quantity > 0) {
+                      <span class="in-stock">In stock</span>
+                    } @else {
+                      <span class="out-stock">Out of stock</span>
+                    }
+                  </div>
+
+                  <div class="item-meta">
+                    <span class="meta-delivery">{{ item.product.delivery_info || 'Eligible for FREE Shipping' }}</span>
+                    <span class="meta-prime">
+                      <span class="prime-p">prime</span>
+                    </span>
+                  </div>
+
+                  <!-- Controls: Qty, Delete -->
+                  <div class="item-controls">
+                    <div class="qty-stepper">
+                      <button
+                        type="button"
+                        class="stepper-btn"
+                        [disabled]="item.quantity <= 1"
+                        (click)="updateQty(item.product.product_id, item.quantity - 1)"
+                      >
+                        -
+                      </button>
+                      <span class="stepper-val">{{ item.quantity }}</span>
+                      <button
+                        type="button"
+                        class="stepper-btn"
+                        [disabled]="item.quantity >= item.product.stock_quantity"
+                        (click)="updateQty(item.product.product_id, item.quantity + 1)"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <span class="control-divider">|</span>
+
+                    <button
+                      type="button"
+                      class="btn-delete-item"
+                      (click)="removeItem(item.product.product_id)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Item Price -->
+                <div class="item-price-col">
+                  <span class="price-val">₹{{ (item.product.price * item.quantity) | number }}</span>
+                  @if (item.quantity > 1) {
+                    <span class="unit-price">₹{{ item.product.price | number }} each</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Subtotal in Footer of Items Card -->
+          <div class="items-card-subtotal">
+            <span>Subtotal ({{ cartService.count() }} {{ cartService.count() === 1 ? 'item' : 'items' }}): </span>
+            <strong class="subtotal-amount">₹{{ cartService.subtotal() | number }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Order Summary -->
+      <div class="summary-column">
+        <div class="summary-card">
+          <div class="subtotal-row">
+            <span>Subtotal ({{ cartService.count() }} items):</span>
+            <span class="subtotal-val">₹{{ cartService.subtotal() | number }}</span>
+          </div>
+
+          <div class="calc-row">
+            <span>Estimated Delivery:</span>
+            <span>{{ cartService.deliveryFee() === 0 ? 'FREE' : '₹' + cartService.deliveryFee() }}</span>
+          </div>
+
+          <div class="calc-row">
+            <span>Estimated GST & Fees (18%):</span>
+            <span>₹{{ cartService.tax() | number }}</span>
+          </div>
+
+          <hr class="summary-divider" />
+
+          <div class="total-row">
+            <span>Order Total:</span>
+            <span class="total-amount">₹{{ cartService.total() | number }}</span>
+          </div>
+
+          <button
+            type="button"
+            class="btn-checkout"
+            (click)="proceedToCheckout()"
+          >
+            Proceed to Buy ({{ cartService.count() }} {{ cartService.count() === 1 ? 'item' : 'items' }})
+          </button>
+
+          <div class="emi-note">
+            <svg class="secure-checkout-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+            </svg>
+            <span>Secure Checkout • 100% Purchase Protection</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,125 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <div>
+      <nav class="breadcrumbs">
+        <a routerLink="/">Home</a>
+        <span class="crumb-sep">›</span>
+        <span class="active-crumb">Seller Central</span>
+      </nav>
+      <h1>Inventory & Product Management</h1>
+      <p class="admin-subtitle">Directly manage MySQL database items, update inventory pricing, and publish new products.</p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/admin/products/new" class="btn-add-product">
+        <svg class="plus-svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+        </svg>
+        <span>Add New Product</span>
+      </a>
+    </div>
+  </div>
+
+  @if (toastMessage(); as msg) {
+    <div class="toast-banner">
+      <svg class="toast-check-svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+      </svg>
+      <span>{{ msg }}</span>
+    </div>
+  }
+
+  <!-- Filter & Search Toolbar -->
+  <div class="admin-toolbar">
+    <div class="search-box">
+      <svg class="search-icon-svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Filter by title, category, or product ID..."
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+    <div class="toolbar-stats" *ngIf="!isLoading()">
+      Total Products in Catalog: <strong>{{ products().length }}</strong>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <app-loading message="Loading catalog for management..."></app-loading>
+  } @else {
+    <div class="table-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Item Image</th>
+            <th>Title & SKU</th>
+            <th>Category</th>
+            <th>Selling Price</th>
+            <th>Stock Level</th>
+            <th>Badge & Deal</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (prod of filteredProducts; track prod.product_id) {
+            <tr>
+              <td class="col-id">#{{ prod.product_id }}</td>
+              <td class="col-img">
+                <div class="table-img-wrap">
+                  <img [src]="prod.image" [alt]="prod.title" />
+                </div>
+              </td>
+              <td class="col-title">
+                <a [routerLink]="['/products', prod.product_id]" class="table-title-link">
+                  {{ prod.title }}
+                </a>
+                <span class="table-sku">SKU: {{ prod.code || 'AMZ-' + prod.product_id }}</span>
+              </td>
+              <td>
+                <span class="category-tag">{{ prod.category_name || 'General' }}</span>
+              </td>
+              <td class="col-price">
+                <span class="cur-price">₹{{ prod.price | number }}</span>
+                @if (prod.original_price && prod.original_price > prod.price) {
+                  <span class="mrp-price"><s>₹{{ prod.original_price | number }}</s></span>
+                }
+              </td>
+              <td>
+                @if (prod.stock_quantity > 10) {
+                  <span class="badge-stock-ok">{{ prod.stock_quantity }} in stock</span>
+                } @else if (prod.stock_quantity > 0) {
+                  <span class="badge-stock-low">Low: {{ prod.stock_quantity }}</span>
+                } @else {
+                  <span class="badge-stock-out">Out of Stock</span>
+                }
+              </td>
+              <td>
+                @if (prod.badge) {
+                  <span class="tag-badge">{{ prod.badge }}</span>
+                }
+                @if (prod.deal_tag) {
+                  <span class="tag-deal">{{ prod.deal_tag }}</span>
+                }
+              </td>
+              <td class="col-actions">
+                <a [routerLink]="['/admin/products/edit', prod.product_id]" class="btn-table-edit" title="Edit Product">
+                  Edit
+                </a>
+                <button
+                  type="button"
+                  class="btn-table-del"
+                  title="Delete Product from Catalog"
+                  (click)="deleteProduct(prod)"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

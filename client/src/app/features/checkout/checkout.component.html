@@ -1,0 +1,247 @@
+<div class="checkout-container">
+  @if (orderConfirmation(); as conf) {
+    <!-- Order Success Receipt Screen -->
+    <div class="order-success-card">
+      <div class="success-icon-wrap">
+        <svg class="success-check-svg" viewBox="0 0 24 24" fill="none" stroke="#007600" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <span class="success-badge">ORDER PLACED SUCCESSFULLY</span>
+      <h2>Thank you, {{ customerName }}!</h2>
+      <p class="order-id-highlight">
+        Order confirmation and invoice sent to <strong>{{ customerEmail }}</strong>
+      </p>
+
+      <div class="order-meta-box">
+        <div class="meta-row">
+          <span class="meta-label">Order Number:</span>
+          <span class="meta-value order-num">#{{ conf.orderId }}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Guaranteed Delivery:</span>
+          <span class="meta-value">{{ conf.estimatedDelivery || 'Tomorrow, between 9 AM and 7 PM' }}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Total Amount:</span>
+          <span class="meta-value price-green">₹{{ conf.totalAmount | number }}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Payment Mode:</span>
+          <span class="meta-value">{{ paymentMethod }} (Demo Recorded)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Items Count:</span>
+          <span class="meta-value">{{ conf.itemCount }} item(s)</span>
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <a routerLink="/orders" class="btn-orders-view">View Order Details</a>
+        <a routerLink="/products" class="btn-continue-shop">Continue Shopping</a>
+      </div>
+    </div>
+  } @else {
+    <!-- Main Checkout Form & Summary -->
+    <div class="checkout-layout">
+      <!-- Left: Checkout Steps -->
+      <div class="form-column">
+        <!-- Step 1: Address -->
+        <div class="checkout-step-card">
+          <div class="step-header">
+            <span class="step-num">1</span>
+            <h2>Select Delivery Address</h2>
+          </div>
+
+          <div class="form-body">
+            <div class="form-row">
+              <label for="custName">Full Name *</label>
+              <input
+                id="custName"
+                type="text"
+                [(ngModel)]="customerName"
+                name="name"
+                placeholder="e.g. Rahul Sharma"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <label for="custEmail">Email Address (for order updates) *</label>
+              <input
+                id="custEmail"
+                type="email"
+                [(ngModel)]="customerEmail"
+                name="email"
+                placeholder="e.g. rahul.sharma@example.com"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <label for="street">Flat, House no., Building, Street *</label>
+              <input
+                id="street"
+                type="text"
+                [(ngModel)]="streetAddress"
+                name="street"
+                placeholder="e.g. 104, Sunrise Residency, 5th Cross, Koramangala"
+                required
+              />
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label for="city">Town / City</label>
+                <input id="city" type="text" [(ngModel)]="city" name="city" />
+              </div>
+              <div class="form-row">
+                <label for="pincode">PIN Code</label>
+                <input id="pincode" type="text" [(ngModel)]="pincode" name="pincode" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div class="checkout-step-card">
+          <div class="step-header">
+            <span class="step-num">2</span>
+            <h2>Select Payment Method</h2>
+          </div>
+
+          <div class="form-body payment-options">
+            <div class="demo-notice-banner">
+              <svg class="info-svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>100% Safe & Secure Checkout: Powered by encrypted transaction processing. Pay on Delivery, UPI, and Card options supported.</span>
+            </div>
+
+            <label class="payment-radio" [class.selected]="paymentMethod === 'Cash on Delivery'">
+              <input
+                type="radio"
+                name="payment"
+                value="Cash on Delivery"
+                [(ngModel)]="paymentMethod"
+              />
+              <div class="radio-content">
+                <strong>Cash on Delivery / Pay on Delivery (Cash / UPI)</strong>
+                <span>Pay via Cash or UPI QR at your doorstep upon package arrival</span>
+              </div>
+            </label>
+
+            <label class="payment-radio" [class.selected]="paymentMethod === 'UPI / QR Code'">
+              <input
+                type="radio"
+                name="payment"
+                value="UPI / QR Code"
+                [(ngModel)]="paymentMethod"
+              />
+              <div class="radio-content">
+                <strong>UPI (Google Pay, PhonePe, Paytm, BHIM)</strong>
+                <span>Instant confirmation simulated for demo purposes</span>
+              </div>
+            </label>
+
+            <label class="payment-radio" [class.selected]="paymentMethod === 'Credit or Debit Card'">
+              <input
+                type="radio"
+                name="payment"
+                value="Credit or Debit Card"
+                [(ngModel)]="paymentMethod"
+              />
+              <div class="radio-content">
+                <strong>Credit or Debit Card</strong>
+                <span>Visa, MasterCard, RuPay, and American Express accepted</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3: Review Items -->
+        <div class="checkout-step-card">
+          <div class="step-header">
+            <span class="step-num">3</span>
+            <h2>Review Items & Delivery</h2>
+          </div>
+
+          <div class="order-items-preview">
+            @for (item of cartService.items(); track item.product.product_id) {
+              <div class="preview-item">
+                <div class="preview-img-box">
+                  <img [src]="item.product.image" [alt]="item.product.title" />
+                </div>
+                <div class="preview-info">
+                  <h4>{{ item.product.title }}</h4>
+                  <p class="preview-qty">Qty: {{ item.quantity }} • ₹{{ item.product.price | number }} each</p>
+                  <span class="item-delivery">Guaranteed Prime Delivery: Tomorrow</span>
+                </div>
+                <div class="preview-price">
+                  ₹{{ (item.product.price * item.quantity) | number }}
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Summary & Order Button -->
+      <div class="summary-column">
+        <div class="checkout-summary-card">
+          <button
+            type="button"
+            class="btn-place-order"
+            [disabled]="orderService.isSubmitting()"
+            (click)="onPlaceOrder()"
+          >
+            @if (orderService.isSubmitting()) {
+              <span>Placing Order... Please wait</span>
+            } @else {
+              <span>Place your Order and Pay</span>
+            }
+          </button>
+
+          <p class="terms-disclaimer">
+            By placing your order, you agree to Amazon's conditions of use & sale and privacy notice.
+          </p>
+
+          <hr class="summary-divider" />
+
+          <h3>Order Summary</h3>
+
+          <div class="summary-line">
+            <span>Items ({{ cartService.count() }}):</span>
+            <span>₹{{ cartService.subtotal() | number }}</span>
+          </div>
+
+          <div class="summary-line">
+            <span>Delivery & Handling:</span>
+            <span>{{ cartService.deliveryFee() === 0 ? 'FREE' : '₹' + cartService.deliveryFee() }}</span>
+          </div>
+
+          <div class="summary-line">
+            <span>Estimated GST & Fees (18%):</span>
+            <span>₹{{ cartService.tax() | number }}</span>
+          </div>
+
+          <hr class="summary-divider" />
+
+          <div class="summary-line grand-total">
+            <span>Order Total:</span>
+            <span>₹{{ cartService.total() | number }}</span>
+          </div>
+
+          @if (errorMessage(); as err) {
+            <div class="checkout-error">
+              <svg class="error-svg-icon" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              <span>{{ err }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

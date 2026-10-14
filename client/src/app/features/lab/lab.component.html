@@ -1,0 +1,239 @@
+<div class="lab-container">
+  <!-- Header -->
+  <div class="lab-header">
+    <nav class="breadcrumbs">
+      <a routerLink="/">Home</a>
+      <span>›</span>
+      <span class="active-crumb">System Diagnostics</span>
+    </nav>
+
+    <div class="header-content">
+      <div class="title-area">
+        <h1>System Architecture & Diagnostics Console</h1>
+        <p>Interactive HTTP services, routing diagnostics, and real-time MySQL database query execution.</p>
+      </div>
+
+      <!-- Live Backend Health Indicator -->
+      @if (health(); as h) {
+        <div class="health-card" [class.health-live]="h.database.connected" [class.health-mock]="h.database.mode === 'mock_fallback'">
+          <div class="health-indicator">
+            <span class="ping-dot"></span>
+            <strong>Express API: {{ h.status }}</strong>
+          </div>
+          <span class="health-db-mode">DB: {{ h.database.mode }} (Port {{ h.database.connected ? '3306' : 'Mock' }})</span>
+          <span class="health-msg">{{ h.database.message }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Services Section -->
+  <section class="lab-section">
+    <div class="section-title-row">
+      <span class="unit-tag">SERVICES</span>
+      <h2>Express Backend Routing & HTTP Endpoints</h2>
+    </div>
+
+    <!-- Navigation Tabs for Services -->
+    <div class="experiment-tabs">
+      @for (exp of unit4Experiments; track exp.id) {
+        <button
+          type="button"
+          class="exp-tab"
+          [class.active]="selectedExperimentId() === exp.id"
+          (click)="selectExperiment(exp.id)"
+        >
+          <span class="tab-id">{{ exp.id.toUpperCase() }}</span>
+          <span class="tab-title">{{ exp.title.split(':')[1] || exp.title }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Interactive Detail Card -->
+    <div class="experiment-detail-card">
+      <div class="detail-header">
+        <div>
+          <span class="exp-badge">{{ currentExperiment.unit }}</span>
+          <h3>{{ currentExperiment.title }}</h3>
+          <p class="exp-desc">{{ currentExperiment.description }}</p>
+        </div>
+        <div class="exp-actions">
+          <a [href]="currentExperiment.endpoint" target="_blank" class="btn-live-endpoint">
+            Launch Service ({{ currentExperiment.endpoint }}) ↗
+          </a>
+        </div>
+      </div>
+
+      <div class="code-breakdown-grid">
+        <div class="code-box">
+          <div class="box-header">Backend Service Script</div>
+          <div class="box-content">
+            <code>File: {{ currentExperiment.scriptPath }}</code>
+            <p>Direct terminal run command:</p>
+            <pre class="cli-cmd">{{ currentExperiment.npmCommand }}</pre>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="box-header">Core Implementation Snippet</div>
+          <pre class="box-snippet"><code>{{ currentExperiment.sourceCodeSnippet }}</code></pre>
+        </div>
+      </div>
+
+      <!-- In-App Sandbox Preview -->
+      <div class="sandbox-preview">
+        <div class="sandbox-bar">
+          <div class="dot-group">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <span class="sandbox-url">http://localhost:5000{{ currentExperiment.endpoint }}</span>
+          <a [href]="currentExperiment.endpoint" target="_blank" class="sandbox-open">Open Raw ↗</a>
+        </div>
+        <iframe
+          [src]="currentExperiment.endpoint"
+          class="sandbox-frame"
+          title="Live Service Endpoint"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Database Section -->
+  <section class="lab-section">
+    <div class="section-title-row">
+      <span class="unit-tag unit-5-tag">DATABASE</span>
+      <h2>MySQL Database Analytics & Subquery Engine</h2>
+    </div>
+
+    <!-- Subqueries Live Interactive Viewer -->
+    <div class="subqueries-card">
+      <div class="subqueries-header">
+        <div>
+          <span class="exp-badge badge-mysql">SQL Engine</span>
+          <h3>Live MySQL Subquery Evaluation (/api/subqueries)</h3>
+          <p>Real-time execution of Scalar, IN, and EXISTS subqueries against the product catalog.</p>
+        </div>
+        <a href="/api/subqueries" target="_blank" class="btn-json-link">View Raw JSON Response ↗</a>
+      </div>
+
+      @if (isLoading()) {
+        <app-loading message="Evaluating MySQL subqueries..."></app-loading>
+      } @else {
+        @if (subqueriesData(); as sq) {
+          <div class="subquery-grid">
+          <!-- 1. Scalar Subquery -->
+          <div class="sq-tile">
+            <h4>1. Scalar Subquery</h4>
+            <p class="sq-desc">Products priced above the storewide average price (<code>AVG(price)</code>):</p>
+            <pre class="sq-sql">{{ sq.scalarSubquery.sql }}</pre>
+            <div class="sq-results">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Product Title</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of sq.scalarSubquery.data; track row.product_id) {
+                    <tr>
+                      <td>#{{ row.product_id }}</td>
+                      <td>{{ row.title }}</td>
+                      <td>₹{{ row.price | number }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 2. IN Subquery -->
+          <div class="sq-tile">
+            <h4>2. IN Subquery</h4>
+            <p class="sq-desc">Products in 'mobiles' and 'laptops' categories via nested selection:</p>
+            <pre class="sq-sql">{{ sq.inSubquery.sql }}</pre>
+            <div class="sq-results">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Product Title</th>
+                    <th>Category</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of sq.inSubquery.data; track row.product_id) {
+                    <tr>
+                      <td>#{{ row.product_id }}</td>
+                      <td>{{ row.title }}</td>
+                      <td>{{ row.category_name }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 3. EXISTS Subquery -->
+          <div class="sq-tile">
+            <h4>3. EXISTS Subquery</h4>
+            <p class="sq-desc">Categories that currently have available stock in the products table:</p>
+            <pre class="sq-sql">{{ sq.existsSubquery.sql }}</pre>
+            <div class="sq-results">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of sq.existsSubquery.data; track row.category_id) {
+                    <tr>
+                      <td>#{{ row.category_id }}</td>
+                      <td>{{ row.name }}</td>
+                      <td>{{ row.description }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        }
+      }
+    </div>
+
+    <!-- SQL Files Table -->
+    <div class="sql-files-card">
+      <h3>Database Schema & Query Scripts</h3>
+      <table class="files-table">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Description</th>
+            <th>File Path in Project</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u5 of unit5Experiments; track u5.id) {
+            <tr>
+              <td class="file-exp-col">{{ u5.id.toUpperCase() }}</td>
+              <td>
+                <strong>{{ u5.title }}</strong>
+                <p class="file-desc">{{ u5.description }}</p>
+              </td>
+              <td>
+                <code class="file-code">{{ u5.file }}</code>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

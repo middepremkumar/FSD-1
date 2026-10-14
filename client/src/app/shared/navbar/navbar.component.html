@@ -1,0 +1,178 @@
+<header class="amz-header">
+  <!-- Top Belt -->
+  <div class="header-main-belt">
+    <!-- Brand Logo -->
+    <a routerLink="/" class="header-logo-container" (click)="closeMobileMenu()" title="Amazon.in Home">
+      <div class="logo-wrapper">
+        <span class="amz-brand">amazon<span class="amz-tld">.in</span></span>
+        <svg class="smile-arrow-svg" viewBox="0 0 100 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 6C28 20 68 22 93 7" stroke="#FF9900" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M83 6L94 7L92 18" stroke="#FF9900" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="prime-pill">prime</span>
+    </a>
+
+    <!-- Delivery Location -->
+    <div class="header-location-box" title="Delivery to Bengaluru 560001">
+      <svg class="nav-svg-icon pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+      <div class="location-lines">
+        <span class="loc-sub">Deliver to Rahul</span>
+        <span class="loc-main">Bengaluru 560001</span>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <form class="header-search-bar" (ngSubmit)="onSearch()">
+      <div class="search-category-dropdown">
+        <select [(ngModel)]="selectedCategory" name="category" aria-label="Select Category">
+          <option value="All">All Categories</option>
+          @for (cat of categories(); track cat.category_id) {
+            <option [value]="cat.slug">{{ cat.name }}</option>
+          }
+        </select>
+        <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+
+      <input
+        type="text"
+        class="search-text-input"
+        placeholder="Search Amazon.in"
+        [(ngModel)]="searchQuery"
+        name="q"
+        autocomplete="off"
+        aria-label="Search items in store"
+      />
+
+      <button type="submit" class="search-submit-btn" aria-label="Submit search">
+        <svg class="search-mag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="7.5"></circle>
+          <line x1="16.5" y1="16.5" x2="22" y2="22"></line>
+        </svg>
+      </button>
+    </form>
+
+    <!-- Right Controls -->
+    <div class="header-right-nav">
+      <!-- Country / Language -->
+      <div class="nav-item-box nav-lang" title="India (English)">
+        <span class="flag-icon">🇮🇳</span>
+        <span class="lang-text">EN</span>
+      </div>
+
+      <!-- Account & Lists -->
+      <a routerLink="/orders" class="nav-item-box" title="Your Account & Lists">
+        <span class="nav-line-small">Hello, sign in</span>
+        <span class="nav-line-bold">Account & Lists</span>
+      </a>
+
+      <!-- Admin Management Link -->
+      <a routerLink="/admin/products" class="nav-item-box" title="Seller Central & Catalog Management">
+        <span class="nav-line-small">Seller Central</span>
+        <span class="nav-line-bold">Inventory</span>
+      </a>
+
+      <!-- Returns & Orders -->
+      <a routerLink="/orders" class="nav-item-box" title="View Returns and Placed Orders">
+        <span class="nav-line-small">Returns</span>
+        <span class="nav-line-bold">& Orders</span>
+      </a>
+
+      <!-- Cart Button -->
+      <a routerLink="/cart" class="header-cart-box" title="Shopping Cart">
+        <div class="cart-icon-stack">
+          <svg class="cart-trolley-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1.5"></circle>
+            <circle cx="20" cy="21" r="1.5"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count-badge">{{ cartService.count() }}</span>
+        </div>
+        <span class="cart-label">Cart</span>
+      </a>
+    </div>
+
+    <!-- Mobile Hamburger Toggle -->
+    <button type="button" class="mobile-hamburger-btn" (click)="toggleMobileMenu()" aria-label="Toggle Navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Sub Navigation Strip -->
+  <nav class="header-sub-strip">
+    <div class="sub-links-container">
+      <a routerLink="/products" class="sub-link-item sub-all-btn">
+        <svg class="sub-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <span>All</span>
+      </a>
+      <a routerLink="/" class="sub-link-item">Amazon miniTV</a>
+      <a routerLink="/products" class="sub-link-item">Best Sellers</a>
+      <a routerLink="/category/mobiles" class="sub-link-item">Mobiles</a>
+      <a routerLink="/category/audio" class="sub-link-item">Audio</a>
+      <a routerLink="/category/laptops" class="sub-link-item">Laptops</a>
+      <a routerLink="/category/fashion" class="sub-link-item">Fashion</a>
+      <a routerLink="/category/wearables" class="sub-link-item">Electronics</a>
+      <a routerLink="/category/cameras" class="sub-link-item">Cameras</a>
+      <a routerLink="/products" class="sub-link-item">Today's Deals</a>
+      <a routerLink="/products" class="sub-link-item">Customer Service</a>
+    </div>
+
+    <div class="sub-right-container">
+      <a routerLink="/products" class="sub-promo-link" title="Great Indian Festival">
+        <span class="sub-promo-badge">FESTIVAL DEALS</span>
+        <span class="sub-promo-text">Shop Big Savings</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Mobile Dropdown Drawer -->
+  @if (isMobileMenuOpen()) {
+    <div class="mobile-drawer-overlay" (click)="closeMobileMenu()">
+      <div class="mobile-drawer-content" (click)="$event.stopPropagation()">
+        <div class="drawer-header">
+          <div class="drawer-user">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="user-avatar-svg">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span>Hello, Sign In</span>
+          </div>
+          <button class="drawer-close-btn" (click)="closeMobileMenu()">✕</button>
+        </div>
+
+        <div class="drawer-body">
+          <div class="drawer-section-title">Trending & Deals</div>
+          <a routerLink="/" (click)="closeMobileMenu()" class="drawer-link">Amazon Storefront Home</a>
+          <a routerLink="/products" (click)="closeMobileMenu()" class="drawer-link">Today's Deals & Offers</a>
+          <a routerLink="/products" (click)="closeMobileMenu()" class="drawer-link">Best Sellers in Electronics</a>
+
+          <div class="drawer-section-title">Shop by Category</div>
+          <a routerLink="/category/mobiles" (click)="closeMobileMenu()" class="drawer-link">Smartphones & Accessories</a>
+          <a routerLink="/category/audio" (click)="closeMobileMenu()" class="drawer-link">Noise-Canceling Headphones</a>
+          <a routerLink="/category/laptops" (click)="closeMobileMenu()" class="drawer-link">Laptops & MacBooks</a>
+          <a routerLink="/category/fashion" (click)="closeMobileMenu()" class="drawer-link">Footwear & Fashion</a>
+          <a routerLink="/category/wearables" (click)="closeMobileMenu()" class="drawer-link">Smartwatches & Fitness</a>
+          <a routerLink="/category/cameras" (click)="closeMobileMenu()" class="drawer-link">DSLR & Mirrorless Cameras</a>
+
+          <div class="drawer-section-title">Customer Tools</div>
+          <a routerLink="/orders" (click)="closeMobileMenu()" class="drawer-link">Your Orders & Returns</a>
+          <a routerLink="/cart" (click)="closeMobileMenu()" class="drawer-link">Shopping Cart ({{ cartService.count() }})</a>
+          <a routerLink="/admin/products" (click)="closeMobileMenu()" class="drawer-link">Seller Central (Inventory)</a>
+          <a routerLink="/products" (click)="closeMobileMenu()" class="drawer-link">Customer Service & Help</a>
+        </div>
+      </div>
+    </div>
+  }
+</header>

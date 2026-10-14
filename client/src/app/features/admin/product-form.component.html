@@ -1,0 +1,202 @@
+<div class="product-form-container">
+  <nav class="breadcrumbs">
+    <a routerLink="/">Home</a>
+    <span class="crumb-sep">›</span>
+    <a routerLink="/admin/products">Seller Central</a>
+    <span class="crumb-sep">›</span>
+    <span class="active-crumb">{{ isEditMode() ? 'Edit Product #' + productId() : 'Create New Product' }}</span>
+  </nav>
+
+  <div class="form-card">
+    <div class="card-header">
+      <h1>{{ isEditMode() ? 'Edit Product Listing #' + productId() : 'Add New Product to Store Catalog' }}</h1>
+      <p>Save details directly to MySQL database and update live storefront inventory in real time.</p>
+    </div>
+
+    @if (errorMessage(); as err) {
+      <div class="form-error-banner">
+        <svg class="error-svg-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <span>{{ err }}</span>
+      </div>
+    }
+
+    @if (isLoading()) {
+      <app-loading message="Loading product data..."></app-loading>
+    } @else {
+      <form class="product-grid-form" (ngSubmit)="onSubmit()">
+        <!-- Form Left: Inputs -->
+        <div class="form-inputs-col">
+          <div class="form-group">
+            <label for="pTitle">Product Title *</label>
+            <input
+              id="pTitle"
+              type="text"
+              [(ngModel)]="formData.title"
+              name="title"
+              placeholder="e.g. Apple iPhone 16 Pro (256 GB) - Natural Titanium"
+              required
+            />
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="pCategory">Category *</label>
+              <select id="pCategory" [(ngModel)]="formData.category_id" name="category_id">
+                @for (cat of categories(); track cat.category_id) {
+                  <option [value]="cat.category_id">{{ cat.name }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pStock">Stock Quantity in Warehouse *</label>
+              <input
+                id="pStock"
+                type="number"
+                [(ngModel)]="formData.stock_quantity"
+                name="stock_quantity"
+                min="0"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="pPrice">Selling Price (₹) *</label>
+              <input
+                id="pPrice"
+                type="number"
+                [(ngModel)]="formData.price"
+                name="price"
+                min="1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="pMrp">Original M.R.P. (₹)</label>
+              <input
+                id="pMrp"
+                type="number"
+                [(ngModel)]="formData.original_price"
+                name="original_price"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="pBadge">Storefront Badge</label>
+              <select id="pBadge" [(ngModel)]="formData.badge" name="badge">
+                <option value="">None</option>
+                <option value="Best Seller">Best Seller</option>
+                <option value="Amazon's Choice">Amazon's Choice</option>
+                <option value="New Arrival">New Arrival</option>
+                <option value="Top Rated">Top Rated</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pDeal">Deal Tag</label>
+              <select id="pDeal" [(ngModel)]="formData.deal_tag" name="deal_tag">
+                <option value="">None</option>
+                <option value="Great Indian Deal">Great Indian Deal</option>
+                <option value="Limited Deal">Limited Deal</option>
+                <option value="Special Offer">Special Offer</option>
+                <option value="Deal of the Day">Deal of the Day</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pImg">Image URL</label>
+            <input
+              id="pImg"
+              type="url"
+              [(ngModel)]="formData.image"
+              name="image"
+              placeholder="https://images.unsplash.com/..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="pDelivery">Delivery Speed Promise</label>
+            <input
+              id="pDelivery"
+              type="text"
+              [(ngModel)]="formData.delivery_info"
+              name="delivery_info"
+              placeholder="e.g. FREE Delivery Tomorrow, 7 AM - 9 PM"
+            />
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="submit"
+              class="btn-save"
+              [disabled]="isSaving()"
+            >
+              {{ isSaving() ? 'Saving Changes...' : (isEditMode() ? 'Update Product Listing' : 'Publish Product') }}
+            </button>
+            <a routerLink="/admin/products" class="btn-cancel">Cancel</a>
+          </div>
+        </div>
+
+        <!-- Form Right: Live Storefront Card Preview -->
+        <div class="form-preview-col">
+          <h3>Live Storefront Preview</h3>
+          <div class="preview-card">
+            @if (formData.badge) {
+              <div class="preview-badge" [class.badge-bestseller]="formData.badge === 'Best Seller'">
+                {{ formData.badge }}
+              </div>
+            }
+            <div class="preview-img-box">
+              <img [src]="formData.image" alt="Preview" />
+            </div>
+            <div class="preview-details">
+              <span class="preview-cat-label">Preview Product</span>
+              <h4>{{ formData.title || 'Product Title Goes Here' }}</h4>
+
+              <div class="preview-stars">
+                <div class="stars-gold">
+                  <svg *ngFor="let s of [1,2,3,4,5]" class="star-mini" viewBox="0 0 20 20" fill="#ffa41c">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                </div>
+                <span class="preview-count">(1,200)</span>
+              </div>
+
+              @if (formData.deal_tag) {
+                <div class="preview-deal-tag">
+                  <span class="deal-pill">{{ formData.deal_tag }}</span>
+                </div>
+              }
+
+              <div class="preview-price-row">
+                <span class="currency">₹</span>
+                <span class="preview-cur-price">{{ formData.price | number }}</span>
+                @if (formData.original_price && formData.original_price > formData.price) {
+                  <span class="preview-mrp">M.R.P: <s>₹{{ formData.original_price | number }}</s></span>
+                }
+              </div>
+
+              <div class="preview-delivery">
+                <span class="prime-tag">prime</span>
+                <span>{{ formData.delivery_info || 'FREE Delivery Tomorrow' }}</span>
+              </div>
+
+              <div class="preview-stock-pill" [class.low]="formData.stock_quantity <= 10">
+                {{ formData.stock_quantity > 0 ? (formData.stock_quantity + ' units available in stock') : 'Out of Stock' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+  </div>
+</div>

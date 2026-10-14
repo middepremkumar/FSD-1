@@ -1,0 +1,130 @@
+<div class="orders-container">
+  <div class="orders-header">
+    <nav class="breadcrumbs">
+      <a routerLink="/">Home</a>
+      <span class="crumb-sep">›</span>
+      <span class="active-crumb">Your Orders</span>
+    </nav>
+    <div class="title-row">
+      <h1>Your Orders</h1>
+      <span class="orders-count" *ngIf="!isLoading()">
+        {{ orders().length }} placed order(s)
+      </span>
+    </div>
+  </div>
+
+  @if (actionToast(); as msg) {
+    <div class="toast-banner">
+      <svg class="toast-check-svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+      </svg>
+      <span>{{ msg }}</span>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <app-loading message="Retrieving your orders from database..."></app-loading>
+  } @else {
+    @if (orders().length === 0) {
+      <div class="empty-orders-card">
+        <div class="empty-box-icon">
+          <svg class="box-svg" viewBox="0 0 24 24" fill="none" stroke="#565959" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+          </svg>
+        </div>
+        <h2>No Orders Placed Yet</h2>
+        <p>You haven't placed any orders yet. Discover today's blockbuster deals, top smartphones, and gadgets.</p>
+        <a routerLink="/products" class="btn-shop-now">Explore Products</a>
+      </div>
+    } @else {
+      <div class="orders-list">
+        @for (order of orders(); track order.order_id) {
+          <div class="order-card">
+            <!-- Authentic Amazon Grey Header Strip -->
+            <div class="order-card-header">
+              <div class="header-col">
+                <span class="col-label">ORDER PLACED</span>
+                <span class="col-val">{{ order.created_at | date:'d MMMM y' }}</span>
+              </div>
+              <div class="header-col">
+                <span class="col-label">TOTAL</span>
+                <span class="col-val price-bold">₹{{ order.total_amount | number }}</span>
+              </div>
+              <div class="header-col">
+                <span class="col-label">SHIP TO</span>
+                <span class="col-val ship-name" [title]="order.shipping_address">
+                  {{ order.customer_name }}
+                </span>
+              </div>
+              <div class="header-col col-right">
+                <span class="col-label">ORDER # {{ order.order_id }}</span>
+                <span class="col-val payment-pill">{{ order.payment_method }}</span>
+              </div>
+            </div>
+
+            <!-- Order Body -->
+            <div class="order-card-body">
+              <!-- Visual Delivery Status Pipeline -->
+              <div class="status-pipeline-box">
+                <div class="pipeline-header">
+                  <span class="delivery-status-headline" [class.delivered-color]="order.order_status === 'Delivered'">
+                    {{ order.order_status === 'Delivered' ? 'Delivered' : 'Arriving Tomorrow' }}
+                  </span>
+                  <span class="tracking-carrier">Dispatched via Amazon Logistics</span>
+                </div>
+
+                <!-- 4-step Visual Timeline -->
+                <div class="pipeline-track">
+                  <div class="step-node" [class.step-active]="getStatusStep(order.order_status) >= 0">
+                    <div class="node-circle"></div>
+                    <span class="node-label">Ordered</span>
+                  </div>
+                  <div class="pipeline-line" [class.line-active]="getStatusStep(order.order_status) >= 1"></div>
+
+                  <div class="step-node" [class.step-active]="getStatusStep(order.order_status) >= 1">
+                    <div class="node-circle"></div>
+                    <span class="node-label">Processing</span>
+                  </div>
+                  <div class="pipeline-line" [class.line-active]="getStatusStep(order.order_status) >= 2"></div>
+
+                  <div class="step-node" [class.step-active]="getStatusStep(order.order_status) >= 2">
+                    <div class="node-circle"></div>
+                    <span class="node-label">Shipped</span>
+                  </div>
+                  <div class="pipeline-line" [class.line-active]="getStatusStep(order.order_status) >= 3"></div>
+
+                  <div class="step-node" [class.step-active]="getStatusStep(order.order_status) >= 3">
+                    <div class="node-circle"></div>
+                    <span class="node-label">Delivered</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-destination-info">
+                <p class="address-preview">
+                  <strong>Delivery Address:</strong> {{ order.shipping_address }}
+                </p>
+                <p class="email-preview">
+                  <strong>Invoice sent to:</strong> {{ order.customer_email }}
+                </p>
+              </div>
+
+              <!-- Quick Action & Tracking -->
+              <div class="order-card-actions">
+                <a routerLink="/products" class="btn-buy-again">Buy it again</a>
+                <button
+                  type="button"
+                  class="btn-advance-status"
+                  title="Track package and update courier milestones"
+                  (click)="advanceStatus(order)"
+                >
+                  <span>Track / Update Delivery Status →</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

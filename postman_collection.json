@@ -1,0 +1,185 @@
+{
+  "info": {
+    "name": "Amazon FSD - Full Stack API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. System & Health",
+      "item": [
+        {
+          "name": "GET Health & DB Status",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/health"
+          }
+        },
+        {
+          "name": "GET Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/stats"
+          }
+        },
+        {
+          "name": "GET Curriculum Matrix",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/concepts"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Lab Exercises (Unit 4 & 5)",
+      "item": [
+        {
+          "name": "GET Hello World (Unit 4.a)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/hello"
+          }
+        },
+        {
+          "name": "GET MySQL Subqueries (Unit 5.c)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/subqueries"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Categories",
+      "item": [
+        {
+          "name": "GET All Categories",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/categories"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Products CRUD (4.d & 5.b)",
+      "item": [
+        {
+          "name": "GET All Products",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/products"
+          }
+        },
+        {
+          "name": "GET Filter by Category (Mobiles)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/products?category=Mobiles"
+          }
+        },
+        {
+          "name": "GET Search Products (Apple)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/products?search=Apple"
+          }
+        },
+        {
+          "name": "GET Single Product #1",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/products/1"
+          }
+        },
+        {
+          "name": "POST Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"OnePlus 12 (16GB RAM, 512GB Storage)\",\n  \"category_id\": 1,\n  \"price\": 64999,\n  \"original_price\": 69999,\n  \"stock_quantity\": 25,\n  \"deal_tag\": \"Launch Offer\",\n  \"badge\": \"New Arrival\",\n  \"delivery_info\": \"FREE Delivery Tomorrow\"\n}"
+            },
+            "url": "http://localhost:5000/api/products"
+          }
+        },
+        {
+          "name": "PUT Update Product #1",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Apple iPhone 15 (128 GB) - Blue [Special Sale]\",\n  \"price\": 65999,\n  \"category_id\": 1,\n  \"stock_quantity\": 35,\n  \"badge\": \"Flash Deal\",\n  \"deal_tag\": \"Festival Special\"\n}"
+            },
+            "url": "http://localhost:5000/api/products/1"
+          }
+        },
+        {
+          "name": "DELETE Product #8",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:5000/api/products/8"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Orders & Checkout",
+      "item": [
+        {
+          "name": "GET All Orders",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/orders"
+          }
+        },
+        {
+          "name": "POST Checkout New Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"Prem Kumar\",\n  \"customer_email\": \"prem.kumar@example.com\",\n  \"shipping_address\": \"Plot 105, Tech City Road, Hyderabad 500081\",\n  \"payment_method\": \"UPI\",\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 1,\n      \"price\": 69999\n    },\n    {\n      \"product_id\": 2,\n      \"quantity\": 1,\n      \"price\": 29990\n    }\n  ]\n}"
+            },
+            "url": "http://localhost:5000/api/orders"
+          }
+        },
+        {
+          "name": "PATCH Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"delivered\"\n}"
+            },
+            "url": "http://localhost:5000/api/orders/1/status"
+          }
+        }
+      ]
+    }
+  ]
+}

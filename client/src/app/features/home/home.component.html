@@ -1,0 +1,217 @@
+<div class="home-container">
+  <!-- Amazon Hero Billboard -->
+  <section class="hero-banner">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge-wrap">
+        <span class="hero-badge">GREAT INDIAN FESTIVAL 2026</span>
+        <span class="hero-badge-sub">SPECIAL EDITIONS • EXCLUSIVE OFFERS</span>
+      </div>
+      <h1 class="hero-title">Upgrade Your Tech & Lifestyle with Mega Savings</h1>
+      <p class="hero-subtitle">
+        Save up to 60% on flagship smartphones, noise-cancelling headphones, ultrabooks, fashion, and home tech.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/products" class="btn-hero-primary">Explore All Deals</a>
+        <a routerLink="/category/mobiles" class="btn-hero-secondary">
+          <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+          </svg>
+          <span>Shop Smartphones</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Retail Trust Perks Ribbon -->
+    <div class="hero-perks">
+      <div class="perk-card">
+        <div class="perk-icon-wrap">
+          <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="#ff9900" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <div class="perk-info">
+          <h4>FREE Prime Delivery</h4>
+          <p>Guaranteed next-day dispatch to 560001</p>
+        </div>
+      </div>
+
+      <div class="perk-card">
+        <div class="perk-icon-wrap">
+          <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="#ff9900" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <div class="perk-info">
+          <h4>100% Genuine Products</h4>
+          <p>Direct brand warranty and fulfillment</p>
+        </div>
+      </div>
+
+      <div class="perk-card">
+        <div class="perk-icon-wrap">
+          <svg class="perk-svg" viewBox="0 0 24 24" fill="none" stroke="#ff9900" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+        </div>
+        <div class="perk-info">
+          <h4>7-Day Easy Returns</h4>
+          <p>Hassle-free replacement at your doorstep</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Retail Metrics Banner -->
+  @if (stats(); as st) {
+    <section class="stats-ribbon">
+      <div class="stat-item">
+        <span class="stat-number">{{ st.totalProducts }}</span>
+        <span class="stat-label">Active Catalog Products</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ st.totalCategories }}</span>
+        <span class="stat-label">Curated Categories</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ st.totalOrders }}</span>
+        <span class="stat-label">Orders Fulfilled</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">₹{{ st.totalRevenue | number }}</span>
+        <span class="stat-label">Total Store Volume</span>
+      </div>
+    </section>
+  }
+
+  <!-- Category Browse Cards -->
+  <section class="home-section">
+    <div class="section-header">
+      <div>
+        <span class="sub-header-tag">EXPLORE BY DEPARTMENT</span>
+        <h2 class="section-title">Shop by Category</h2>
+      </div>
+      <a routerLink="/products" class="see-all-link">See all categories →</a>
+    </div>
+
+    <div class="category-grid">
+      @for (cat of categories(); track cat.category_id) {
+        <a [routerLink]="['/category', cat.slug]" class="category-card">
+          <div class="category-icon-bubble">
+            @switch (cat.slug) {
+              @case ('mobiles') {
+                <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                  <line x1="12" y1="18" x2="12.01" y2="18"/>
+                </svg>
+              }
+              @case ('audio') {
+                <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                  <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                </svg>
+              }
+              @case ('laptops') {
+                <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="2" y1="20" x2="22" y2="20"/>
+                </svg>
+              }
+              @case ('fashion') {
+                <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                </svg>
+              }
+              @case ('wearables') {
+                <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="7"/>
+                  <polyline points="12 9 12 12 13.5 13.5"/>
+                  <path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.83a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 0 1 9.83 1h4.34a2 2 0 0 1 2 1.82l.35 3.83"/>
+                </svg>
+              }
+              @case ('cameras') {
+                <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              }
+              @default {
+                <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+              }
+            }
+          </div>
+          <h3 class="category-title">{{ cat.name }}</h3>
+          <p class="category-desc">{{ cat.description }}</p>
+          <span class="category-action">Explore Deals →</span>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- Today's Blockbuster Deals -->
+  @if (isLoading()) {
+    <app-loading message="Loading Amazon deals & best sellers..."></app-loading>
+  } @else {
+    @if (dealProducts().length > 0) {
+      <section class="home-section">
+        <div class="section-header">
+          <div>
+            <span class="sub-header-tag">LIMITED TIME OFFERS</span>
+            <h2 class="section-title">Today's Blockbuster Deals</h2>
+          </div>
+          <a routerLink="/products" class="see-all-link">View all {{ dealProducts().length }} deals →</a>
+        </div>
+
+        <div class="product-grid">
+          @for (prod of dealProducts(); track prod.product_id) {
+            <app-product-card [product]="prod"></app-product-card>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Recommended Best Sellers -->
+    <section class="home-section">
+      <div class="section-header">
+        <div>
+          <span class="sub-header-tag">POPULAR CHOICES</span>
+          <h2 class="section-title">Featured Best Sellers & New Arrivals</h2>
+        </div>
+        <a routerLink="/products" class="see-all-link">Explore full catalog ({{ featuredProducts().length }}) →</a>
+      </div>
+
+      <div class="product-grid">
+        @for (prod of featuredProducts(); track prod.product_id) {
+          <app-product-card [product]="prod"></app-product-card>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Amazon Prime Banner -->
+  <section class="prime-promo-banner">
+    <div class="prime-promo-content">
+      <div class="prime-promo-badge-row">
+        <span class="prime-promo-badge">AMAZON PRIME</span>
+        <span class="prime-promo-pill">Membership Benefits</span>
+      </div>
+      <h2>Free One-Day Delivery, Exclusive Deals & Fast Checkout</h2>
+      <p>
+        Enjoy unlimited fast, free delivery on millions of eligible items, 30-minute early access to Lightning Deals, and dedicated customer care.
+      </p>
+      <div class="prime-promo-actions">
+        <a routerLink="/products" class="btn-prime-primary">Explore Prime Eligible Items</a>
+        <a routerLink="/category/mobiles" class="btn-prime-secondary">
+          <span>View Festival Deals</span>
+          <svg class="chevron-svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

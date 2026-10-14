@@ -1,0 +1,12 @@
+.site-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #eaeded;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
